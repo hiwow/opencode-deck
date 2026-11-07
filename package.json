@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "description": "Local web dashboard for monitoring and steering up to four OpenCode v2 projects.",
+  "license": "MIT",
+  "author": "hiwow",
   "repository": {
     "type": "git",
     "url": "https://github.com/hiwow/opencode-deck.git"

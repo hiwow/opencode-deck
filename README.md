@@ -1,5 +1,9 @@
 # OpenCode Deck
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+**简体中文** | [English](README.en.md)
+
 在同一个本地 Web 页面里监控最多 **4 个 OpenCode v2 项目**。四个项目的进度汇入一个统一对话流，各自有固定颜色；可以按项目快速筛选，也可以一次向 1–4 个项目下达指令。遇到权限请求或需要填写表单时，会在顶部显著提醒并可直接处理。
 
 > 已在 Windows 11 + OpenCode **v2.2.6** 上验证；真实 `deepseek-v4.1-flash` 回复、SSE 流式输出已验证，权限/表单交互链路用本地 mock 验证。
@@ -300,3 +304,7 @@ config.example.json
 start.cmd
 vite.config.ts
 ```
+
+## License
+
+MIT © 2026 [hiwow](https://github.com/hiwow). See [LICENSE](LICENSE).
