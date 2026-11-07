@@ -1,0 +1,34 @@
+{
+  "port": 5178,
+  "autoLoad": true,
+  "agents": [
+    {
+      "id": "slot-1",
+      "label": "My App",
+      "directory": "D:\\projects\\my-app",
+      "mode": "shared",
+      "follow": true
+    },
+    {
+      "id": "slot-2",
+      "label": "",
+      "directory": "",
+      "mode": "shared",
+      "follow": true
+    },
+    {
+      "id": "slot-3",
+      "label": "",
+      "directory": "",
+      "mode": "shared",
+      "follow": true
+    },
+    {
+      "id": "slot-4",
+      "label": "",
+      "directory": "",
+      "mode": "shared",
+      "follow": true
+    }
+  ]
+}
