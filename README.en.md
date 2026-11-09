@@ -22,7 +22,7 @@ Monitor up to **four OpenCode v2 projects** from one local web page. Progress fr
 - **Auto-load running OpenCode windows**: on startup, Deck detects running `opencode` TUIs and fills empty slots automatically. It can be disabled in Settings, or triggered manually at any time.
 - **Fixed project colors**: each slot has its own color (amber / emerald / sky / violet) used by the sidebar, filter chips, messages, and composer targets.
 - **Fast session filtering**: click the sidebar, the colored filter bar, or the mobile project strip to focus one project. Press `1–4` to switch, `0` / `Esc` to show all.
-- **Multi-target instructions**: select 1–4 targets in the composer and send once; queue or steer the current run.
+- **Single-project sending by default**: selecting a project also selects its recipient. Returning to All keeps the last recipient and never enables broadcast automatically. For occasional broadcasts, write an instruction, open **More → Send to multiple projects**, then select and confirm recipients. Queue and steer remain available.
 - **Session follow / pin**: when focused on one project, switch between its sessions, create a new session, or toggle follow-latest next to the chat title.
 - **Prominent interaction alerts**: when OpenCode asks for permission or creates a form, an amber pending bar appears at the top and counts are shown in the top bar and sidebar:
   - Permission: allow once / always allow / reject;
@@ -114,7 +114,7 @@ npm run serve       # backend only (build first)
   - a running turn shows LIVE and a stop button;
   - tool calls and reasoning are collapsed below the reply.
 - Colored filter bar: `All` plus the four projects. When a project is focused, a **session switcher** appears next to the chat title.
-- Composer: choose targets, type, select queue/steer, and send.
+- Composer: shows the current recipient with a project selector. Sending is disabled until a project is chosen. Type, select queue/steer, and send; multi-project sending is under More and requires recipient confirmation.
 
 ### Keyboard
 

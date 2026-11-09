@@ -45,11 +45,10 @@ interface UnifiedChatProps {
   connected: boolean
   activeProject: string | null
   onActiveProject: (id: string | null) => void
-  targets: Set<string>
+  recipientId: string | null
   sending: boolean
-  onToggleTarget: (id: string) => void
-  onSelectAllTargets: () => void
-  onSend: (text: string, delivery: Delivery) => Promise<boolean>
+  onSelectRecipient: (id: string) => void
+  onSend: (text: string, delivery: Delivery, targetIds?: string[]) => Promise<boolean>
   onOpenSettings: () => void
   onInterrupt: (agentId: string) => void
   onReplyPermission: (agentId: string, requestId: string, decision: PermissionDecision) => Promise<void>
@@ -79,10 +78,9 @@ export function UnifiedChat({
   connected,
   activeProject,
   onActiveProject,
-  targets,
+  recipientId,
   sending,
-  onToggleTarget,
-  onSelectAllTargets,
+  onSelectRecipient,
   onSend,
   onOpenSettings,
   onInterrupt,
@@ -313,7 +311,7 @@ export function UnifiedChat({
                       ? '在设置里选择最多四个 OpenCode 项目，所有进度会汇入这一个窗口。'
                       : activeProject
                         ? '切回“全部”可以看其他项目的进度，或在下方直接给这个项目发指令。'
-                        : '在下方选中目标项目并发送指令。四个项目的回复会按时间交织显示，各自有固定颜色。'}
+                        : '先选择一个项目，再下达指令。各项目的回复会按时间交织显示。'}
                   </div>
                 </div>
                 {configured.length === 0 ? (
@@ -373,10 +371,9 @@ export function UnifiedChat({
       <Composer
         configAgents={configAgents}
         agents={agents}
-        targets={targets}
+        recipientId={recipientId}
         sending={sending}
-        onToggleTarget={onToggleTarget}
-        onSelectAll={onSelectAllTargets}
+        onSelectRecipient={onSelectRecipient}
         onSend={onSend}
         onOpenSettings={onOpenSettings}
       />

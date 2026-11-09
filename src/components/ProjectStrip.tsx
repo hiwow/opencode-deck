@@ -17,7 +17,7 @@ export function ProjectStrip({ configAgents, agents, activeProject, onActiveProj
   const configured = configAgents.filter((agent) => agent.directory.trim())
 
   return (
-    <div className="-mx-3 flex gap-1.5 overflow-x-auto px-3 pb-0.5 lg:hidden">
+    <div className="-mx-2.5 flex gap-1.5 overflow-x-auto px-2.5 pb-0.5 sm:-mx-3 sm:px-3 lg:hidden">
       <button
         type="button"
         onClick={() => onActiveProject(null)}

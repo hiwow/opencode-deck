@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AlertTriangle, Loader2, Power, RefreshCw, Settings2 } from 'lucide-react'
 import { toast, Toaster } from 'sonner'
 import type { Delivery, PermissionDecision } from '../shared/types'
@@ -18,7 +18,7 @@ export default function App() {
   const { theme, toggleTheme } = useTheme()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [activeProject, setActiveProject] = useState<string | null>(null)
-  const [deselected, setDeselected] = useState<Set<string>>(new Set())
+  const [recipientId, setRecipientId] = useState<string | null>(null)
   const [sending, setSending] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
   const [startingService, setStartingService] = useState(false)
@@ -30,10 +30,11 @@ export default function App() {
     () => (config ? config.agents.filter((agent) => agent.directory.trim()) : []),
     [config],
   )
-  const targets = useMemo(
-    () => new Set(configuredAgents.filter((agent) => !deselected.has(agent.id)).map((agent) => agent.id)),
-    [configuredAgents, deselected],
-  )
+  const recipient = configuredAgents.find((agent) => agent.id === recipientId)
+  const handleActiveProject = useCallback((id: string | null) => {
+    setActiveProject(id)
+    if (id) setRecipientId(id)
+  }, [])
   const interactionCount = useMemo(
     () => configuredAgents.reduce((total, agent) => total + (state.agents[agent.id]?.interactions.length ?? 0), 0),
     [configuredAgents, state.agents],
@@ -73,34 +74,20 @@ export default function App() {
       if (target && (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement || target.isContentEditable)) return
       if (event.metaKey || event.ctrlKey || event.altKey) return
       if (event.key === '0' || event.key === 'Escape') {
-        setActiveProject(null)
+        handleActiveProject(null)
         return
       }
       const index = Number.parseInt(event.key, 10) - 1
       if (index >= 0 && index < config.agents.length) {
         const agent = config.agents[index]
         if (agent?.directory) {
-          setActiveProject((current) => (current === agent.id ? null : agent.id))
+          handleActiveProject(activeProject === agent.id ? null : agent.id)
         }
       }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [config])
-
-  const toggleTarget = (id: string) => {
-    setDeselected((current) => {
-      const next = new Set(current)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
-    })
-  }
-
-  const selectAllTargets = () => {
-    const allSelected = configuredAgents.every((agent) => targets.has(agent.id))
-    setDeselected(allSelected ? new Set(configuredAgents.map((agent) => agent.id)) : new Set())
-  }
+  }, [config, activeProject, handleActiveProject])
 
   const handleRefresh = async () => {
     setRefreshing(true)
@@ -118,8 +105,10 @@ export default function App() {
     }
   }
 
-  const handleGlobalSend = async (text: string, delivery: Delivery): Promise<boolean> => {
-    if (targets.size === 0) {
+  const handleGlobalSend = async (text: string, delivery: Delivery, targetIds?: string[]): Promise<boolean> => {
+    const targets = [...new Set(targetIds ?? (recipient ? [recipient.id] : []))]
+      .filter((id) => configuredAgents.some((agent) => agent.id === id))
+    if (targets.length === 0) {
       toast.error('请至少选择一个目标项目')
       return false
     }
@@ -339,7 +328,7 @@ export default function App() {
               agents={state.agents}
               service={state.service}
               activeProject={activeProject}
-              onActiveProject={setActiveProject}
+              onActiveProject={handleActiveProject}
               onOpenSettings={() => setSettingsOpen(true)}
               onSeen={handleSeen}
             />
@@ -349,7 +338,7 @@ export default function App() {
                 configAgents={config.agents}
                 agents={state.agents}
                 activeProject={activeProject}
-                onActiveProject={setActiveProject}
+                onActiveProject={handleActiveProject}
                 onOpenSettings={() => setSettingsOpen(true)}
                 onSeen={handleSeen}
               />
@@ -358,11 +347,10 @@ export default function App() {
                 agents={state.agents}
                 connected={state.connected}
                 activeProject={activeProject}
-                onActiveProject={setActiveProject}
-                targets={targets}
+                onActiveProject={handleActiveProject}
+                recipientId={recipient?.id ?? null}
                 sending={sending}
-                onToggleTarget={toggleTarget}
-                onSelectAllTargets={selectAllTargets}
+                onSelectRecipient={handleActiveProject}
                 onSend={handleGlobalSend}
                 onOpenSettings={() => setSettingsOpen(true)}
                 onInterrupt={(id) => void handleInterrupt(id)}
