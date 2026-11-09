@@ -100,8 +100,7 @@ export function ChatMessage({ item, agent, config, onInterrupt }: ChatMessagePro
         <div className="min-w-0 flex-1">
           <MessageMeta item={item} agent={agent} config={config} streaming={false} onInterrupt={onInterrupt} />
           <div
-            className="inline-flex items-center gap-2.5 rounded-2xl rounded-tl-md border border-dashed px-3.5 py-2.5 text-sm"
-            style={{ backgroundColor: tint, borderColor: borderTint, color }}
+            className="inline-flex flex-wrap items-center gap-2.5 py-2 text-sm text-muted-foreground"
           >
             <Loader2 className="size-4 animate-spin" />
             <span>正在思考 / 调用工具…</span>
@@ -147,8 +146,8 @@ export function ChatMessage({ item, agent, config, onInterrupt }: ChatMessagePro
       <div className="min-w-0 flex-1">
         <MessageMeta item={item} agent={agent} config={config} streaming={streaming} onInterrupt={onInterrupt} />
         <div
-          className="rounded-2xl rounded-tl-md border bg-card px-4 py-3.5 shadow-xs"
-          style={{ borderLeftWidth: 3, borderLeftColor: color }}
+          className="min-w-0 border-l px-3 py-1 sm:px-4"
+          style={{ borderLeftColor: projectTint(item.agentIndex, 22) }}
         >
           {error ? (
             <Alert variant="destructive" className="mb-3 border-destructive/20 bg-destructive/5 py-2.5">

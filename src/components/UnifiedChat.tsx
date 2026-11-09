@@ -298,7 +298,7 @@ export function UnifiedChat({
 
       <div className="relative min-h-0 flex-1">
         <div ref={scrollRef} onScroll={handleScroll} className="h-full overflow-y-auto px-3 py-4 sm:px-5">
-          <div className={cn('mx-auto flex w-full max-w-4xl flex-col gap-4', feed.length === 0 && 'min-h-full justify-center')}>
+          <div className={cn('flex w-full min-w-0 flex-col gap-5', feed.length === 0 && 'min-h-full justify-center')}>
             {feed.length === 0 ? (
               <div className="flex min-h-[280px] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed bg-muted/15 px-6 py-12 text-center">
                 <span className="flex size-11 items-center justify-center rounded-2xl border bg-background shadow-xs">
